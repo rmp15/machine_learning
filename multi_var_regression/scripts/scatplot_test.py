@@ -10,5 +10,3 @@ print(dat)
 # plot sin data
 scatplot('variable', 'rate.adj', dat)
 
-
-#a
