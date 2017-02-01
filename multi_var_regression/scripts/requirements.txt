@@ -1,8 +1,9 @@
-feather
+#feather
 scipy
 scikit-learn
 numpy
 pandas
 tensorflow
 matplotlib
-six.moves
+#six.moves
+seaborn
