@@ -1,8 +1,6 @@
 import pandas as pd
-
 from data.file_paths import *
-from functions.plot import sinplot
-
+from functions.plot.sinplot import sineplot
 
 dat = pd.read_csv(TEMP_TEST_1, index_col=0)
 
@@ -10,4 +8,4 @@ dat = pd.read_csv(TEMP_TEST_1, index_col=0)
 print(dat)
 
 # plot sin data
-sinplot()
+sineplot()
