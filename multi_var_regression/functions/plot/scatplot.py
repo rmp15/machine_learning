@@ -1,9 +1,10 @@
-import seaborn as sns
 import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
 
 
-def scatplot(x,y,data):
+def scatplot(x, y, file_loc):
 
-    sns.jointplot(x,y,data)
-
+    dat = pd.read_csv(file_loc, index_col=0)
+    sns.jointplot(x, y, dat)
     plt.show()
