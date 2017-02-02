@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 
 from data.file_paths import *
 from functions.plot.scatplot_facet import scatplot_facet

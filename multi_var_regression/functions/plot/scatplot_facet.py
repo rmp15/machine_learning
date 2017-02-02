@@ -18,7 +18,7 @@ def scatplot_facet(x, y, facet_col, data, hue, title_main, title_sub, x_label, y
     temp.fig.suptitle(title_main)
     temp.set_axis_labels(x_label, y_label)
     temp.set_titles(title_sub)
-    # temp.add_legend()
+    temp.add_legend()
 
     #plt.show()
     savefig('../output/test.pdf', bbox_inches='tight')
