@@ -1,10 +1,10 @@
 import pandas as pd
 
-from multi_var_regression.data.file_paths import TEMP_TEST_1
+from multi_var_regression.data.file_paths import TEMP_TEST_2
 from multi_var_regression.functions.data_manip.data_tools import *
 from multi_var_regression.functions.plot.plot_tools import scatplot_facet, linplot_facet, linplot_facet_2
 
-dat = pd.read_csv(TEMP_TEST_1, index_col=0)
+dat = pd.read_csv(TEMP_TEST_2, index_col=0)
 
 # create unique id based on year and month FIX FUNCTION
 #compound_key(dat, 'year', 'month')
