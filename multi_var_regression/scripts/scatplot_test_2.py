@@ -2,7 +2,7 @@ import pandas as pd
 
 from data.file_paths import *
 from functions.plot.scatplot_facet import scatplot_facet
-from functions.table import rate_multiply
+from functions.data_manip import rate_multiply
 
 dat = pd.read_csv(TEMP_TEST_1, index_col=0)
 
