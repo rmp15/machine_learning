@@ -1,15 +1,15 @@
 import pandas as pd
 
 from data.file_paths import *
-from functions.plot.scatplot_facet import scatplot_facet
 from functions.data_manip import rate_multiply
+from functions.plot.scatplot_facet import scatplot_facet
 
 dat = pd.read_csv(TEMP_TEST_1, index_col=0)
 
 # create unique id based on year and month MAKE FUNCTION
 dat['year_month'] = dat.year.astype(str) + dat.month.astype(str)
 
-# create death rate per 100,000 MAKE FUNCTION
+# create death rate per 100,000
 #dat['rate_100000'] = dat['rate.adj'] * 100000
 rate_multiply(dat, "rate_adj", 100000)
 
