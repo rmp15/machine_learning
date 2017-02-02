@@ -1,6 +1,6 @@
 from sklearn import linear_model
 
-from data.csv import read_two_col_csv, extract_train_test
+from ml_hack.data.csv import read_two_col_csv, extract_train_test
 
 
 def run_csv_linear_regression(file_path):

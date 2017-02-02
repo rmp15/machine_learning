@@ -1,8 +1,8 @@
 import numpy as np
-from ml_hack.functions.linear.regression import run_csv_linear_regression
-from ml_hack.functions.plot.line_graph import plot_linear_regression
 
 from ml_hack.data.file_paths import TEMP_DATA
+from ml_hack.functions.linear.regression import run_csv_linear_regression
+from ml_hack.functions.plot.line_graph import plot_linear_regression
 
 regr, x_test, y_test = run_csv_linear_regression(TEMP_DATA)
 

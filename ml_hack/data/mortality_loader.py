@@ -1,4 +1,4 @@
-from linear.regression import run_csv_linear_regression
+from ml_hack.functions.linear.regression import run_csv_linear_regression
 
 FILES_DIR = '/Users/rmiparks/morality'
 
