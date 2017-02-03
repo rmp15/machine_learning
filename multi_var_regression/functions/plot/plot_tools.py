@@ -52,10 +52,14 @@ def scatplot_facet(x, y, facet_col, data, hue, title_main, x_label, y_label, out
 
 
 # plots line plot coloured and faceted
-def linplot_facet(x, y, facet_col, data, hue, title_main, x_label, y_label, output, col_wrap=5, ):
+#def linplot_facet(x, y, facet_col, data, hue, title_main, x_label, y_label, output, col_wrap=5, ):
+def linplot_facet(x, y, data, **kwargs):
 
     # create facet grid
-    temp = sns.FacetGrid(data=data, col=facet_col, hue=hue, col_wrap=col_wrap)
+    if 'hue' in kwargs:
+        temp = sns.FacetGrid(data=data, col=facet_col, hue=hue, col_wrap=col_wrap)
+    else:
+        temp = sns.FacetGrid(data=data, col=facet_col, col_wrap=col_wrap)
 
     # create scatter plot
     temp.map(plt.plot, x, y,)
@@ -74,7 +78,7 @@ def linplot_facet(x, y, facet_col, data, hue, title_main, x_label, y_label, outp
     savefig('../output/' + output + '.pdf', bbox_inches='tight')
 
 
-# plots line plot coloured and faceted
+# plots line plot coloured and faceted DELETE WHEN FIXED ABOVE
 def linplot_facet_2(x, y, facet_col, data, title_main, x_label, y_label, output, col_wrap=5, ):
 
     # create facet grid
