@@ -5,5 +5,5 @@ numpy
 pandas
 tensorflow
 matplotlib
-#six.moves
+six.moves
 seaborn
