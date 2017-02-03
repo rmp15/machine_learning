@@ -5,11 +5,9 @@ from __future__ import print_function
 import numpy as np
 import tensorflow as tf
 
-from data.file_paths import *
+from multi_var_regression.data.file_paths import *
 
-import numpy as np
-
-# Load datasets.#
+# Load datasets
 training_set = tf.contrib.learn.datasets.base.load_csv_with_header(
     filename=IRIS_TRAINING,
     target_dtype=np.int,
