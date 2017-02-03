@@ -21,9 +21,6 @@ def plot_facet(plot, x, y, facet_col, data, title_main, x_label, y_label, output
     else:
         print('Please specify plot type with plot argument')
 
-    # adjust main title position to not overlap
-    # plt.subplots_adjust(top=0.01)
-
     # add plot details
     temp.fig.suptitle(title_main)
     temp.set_axis_labels(x_label, y_label)
