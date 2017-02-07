@@ -9,12 +9,12 @@ from multi_var_regression.data.file_paths import *
 
 # Load datasets
 training_set = tf.contrib.learn.datasets.base.load_csv_with_header(
-    filename=IRIS_TRAINING,
-    target_dtype=np.int,
+    filename=TEMP_MORT_TRAIN_1,
+    target_dtype=np.float32,
     features_dtype=np.float32)
 test_set = tf.contrib.learn.datasets.base.load_csv_with_header(
-    filename=IRIS_TEST,
-    target_dtype=np.int,
+    filename=TEMP_MORT_TEST_1,
+    target_dtype=np.float32,
     features_dtype=np.float32)
 
 # Specify that all features have real-value data
