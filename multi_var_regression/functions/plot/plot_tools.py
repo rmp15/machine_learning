@@ -38,4 +38,3 @@ def plot_facet(plot, x, y, facet_col, data, title_main, x_label, y_label, output
     # plt.show()
     rc('figure', figsize=(11.69, 8.27))
     savefig(os.path.join(output_loc, output + '.pdf'), bbox_inches='tight')
-    #savefig('../output/' + output + '.pdf', bbox_inches='tight')
