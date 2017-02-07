@@ -1,6 +1,6 @@
 from ml_hack.functions.linear.regression import run_csv_linear_regression
 
-FILES_DIR = '/Users/rmiparks/morality'
+FILES_DIR = '/Users/rmiparks/mortality'
 
 ALL_AGES = [0, 5, 15, 25, 35]
 
