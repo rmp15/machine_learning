@@ -17,11 +17,14 @@ def read_two_col_csv(file_path):
 
 
 def extract_train_test(data, n_tests):
-    data = pd.DataFrame(data)
-    train = data[:n_tests]
+    data = pd.read_csv(data)
+    train = data[:-n_tests]
     test = data[-n_tests:]
 
-    return train, test
+    train.to_csv('output_train.csv', sep=',')
+    test.to_csv('output_test.csv', sep=',')
+
+    #return train, test
 
 
 def _reshape(col_data):

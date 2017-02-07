@@ -3,31 +3,26 @@ from __future__ import division
 from __future__ import print_function
 
 import numpy as np
-import pandas as pd
 import tensorflow as tf
 
 from multi_var_regression.data.csv import extract_train_test
-from multi_var_regression.data.file_paths import *
+from multi_var_regression.data.file_paths import TEMP_MORT
 
-# create training and test subsets
-print('File location is ' + TEMP_MORT_TRAIN_1)
-test =pd.read_csv(TEMP_MORT_TRAIN_1)
-#print(test)
-
-train_set, test_set = extract_train_test(TEMP_MORT_TRAIN_1, 1000)
-
-print(train_set.shape)
-print(test_set.shape)
+#train_set, test_set = extract_train_test(TEMP_MORT, 1000)
+extract_train_test(TEMP_MORT, 1000)
 
 # Load datasets
 training_set = tf.contrib.learn.datasets.base.load_csv_with_header(
-    filename=TEMP_MORT_TRAIN_1,
+    filename='output_train.csv',
     target_dtype=np.float32,
-    features_dtype=np.float32)
+    features_dtype=np.int)
 test_set = tf.contrib.learn.datasets.base.load_csv_with_header(
-    filename=TEMP_MORT_TEST_1,
+    filename='output_test.csv',
     target_dtype=np.float32,
-    features_dtype=np.float32)
+    features_dtype=np.int)
+
+print(training_set)
+
 
 # Specify that all features have real-value data
 feature_columns = [tf.contrib.layers.real_valued_column("", dimension=4)]
