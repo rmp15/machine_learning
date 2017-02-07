@@ -16,12 +16,10 @@ def read_two_col_csv(file_path):
     return x, y
 
 
-def extract_train_test(input_col, n_tests):
-    train = input_col[:-n_tests]
-    test = input_col[-n_tests:]
-
-    train = _reshape(train)
-    test = _reshape(test)
+def extract_train_test(data, n_tests):
+    data = pd.DataFrame(data)
+    train = data[:n_tests]
+    test = data[-n_tests:]
 
     return train, test
 
