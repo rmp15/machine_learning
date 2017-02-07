@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import os
 import seaborn as sns
 from matplotlib import rc
 from matplotlib.pyplot import savefig
@@ -27,6 +28,14 @@ def plot_facet(plot, x, y, facet_col, data, title_main, x_label, y_label, output
     temp.set_titles('{col_name}')
     temp.add_legend()
 
+    # create file string for output
+    output_loc = os.path.join('..', 'output', 'plots')
+
+    # create directory if it doesn't exist
+    if not os.path.exists(output_loc):
+        os.makedirs(output_loc)
+
     # plt.show()
     rc('figure', figsize=(11.69, 8.27))
-    savefig('../output/' + output + '.pdf', bbox_inches='tight')
+    savefig(os.path.join(output_loc, output + '.pdf'), bbox_inches='tight')
+    #savefig('../output/' + output + '.pdf', bbox_inches='tight')
