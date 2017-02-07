@@ -13,10 +13,12 @@ from multi_var_regression.data.file_paths import TEMP_MORT
 extract_train_test(TEMP_MORT, 1000)
 
 # Load datasets
+# features are in the all columns but the last one
+# target is the last column
 training_set = tf.contrib.learn.datasets.base.load_csv_with_header(
     filename='output_train_2.csv',
     target_dtype=np.float32,
-    features_dtype=np.float32)
+    features_dtype=np.int)
 
 #test_set = tf.contrib.learn.datasets.base.load_csv_with_header(
 #    filename='output_test.csv',
