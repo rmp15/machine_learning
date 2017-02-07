@@ -4,6 +4,7 @@ from __future__ import print_function
 
 import numpy as np
 import tensorflow as tf
+import pandas as pd
 
 from multi_var_regression.data.csv import extract_train_test
 from multi_var_regression.data.file_paths import TEMP_MORT
@@ -13,16 +14,16 @@ extract_train_test(TEMP_MORT, 1000)
 
 # Load datasets
 training_set = tf.contrib.learn.datasets.base.load_csv_with_header(
-    filename='output_train.csv',
+    filename='output_train_2.csv',
     target_dtype=np.float32,
-    features_dtype=np.int)
-test_set = tf.contrib.learn.datasets.base.load_csv_with_header(
-    filename='output_test.csv',
-    target_dtype=np.float32,
-    features_dtype=np.int)
+    features_dtype=np.float32)
+
+#test_set = tf.contrib.learn.datasets.base.load_csv_with_header(
+#    filename='output_test.csv',
+#    target_dtype=np.float32,
+#    features_dtype=np.float32)
 
 print(training_set)
-
 
 # Specify that all features have real-value data
 feature_columns = [tf.contrib.layers.real_valued_column("", dimension=4)]
