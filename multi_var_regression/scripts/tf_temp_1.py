@@ -10,10 +10,9 @@ import tensorflow as tf
 from multi_var_regression.data.file_paths import TEMP_MORT
 
 # details of data set
-COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'deaths', 'iso3', 'pop', 'pop.adj', 'rate',
-           'rate.adj', 'rate.adj.old', 'leap', 'deaths.adj', 'variable', 'month.short', 'state.name']
-FEATURES = ['year', 'month', 'variable']
-LABEL = 'rate.adj'
+COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'rate.adj', 'temperature', 'season']
+FEATURES = ['sex', 'rate.adj', 'season']
+LABEL = 'temperature'
 
 # Load data sets
 training_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
@@ -21,7 +20,7 @@ training_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
 test_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
                        names=COLUMNS, skiprows=(training_set.shape[0] - 1000 + 1))
 prediction_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
-                       names=COLUMNS, skiprows=(training_set.shape[0] - 10 + 1))
+                             names=COLUMNS, skiprows=(training_set.shape[0] - 10 + 1))
 
 # create feature columns formally, confirming they are all real-valued
 feature_cols = [tf.contrib.layers.real_valued_column(k)
@@ -52,5 +51,7 @@ y = regressor.predict(input_fn=lambda: input_fn(prediction_set))
 # .predict() returns an iterator; convert to a list and print predictions
 predictions = list(itertools.islice(y, 10))
 print("Predictions: {}".format(str(predictions)))
+print("Real values: {}".format(str(list(prediction_set.temperature))))
 
 print(prediction_set.head())
+

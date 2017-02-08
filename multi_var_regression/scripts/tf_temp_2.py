@@ -42,8 +42,7 @@ fips = tf.contrib.layers.sparse_column_with_keys(column_name="fips", keys=fips)
 model_dir = tempfile.mkdtemp()
 
 # defining the logistic regression model
-m = tf.contrib.learn.LinearClassifier(feature_columns=[sex, age, month, fips, rate_adj, temperature],
-                                      model_dir=model_dir)
+m = tf.contrib.learn.LinearClassifier(feature_columns=[fips], model_dir=model_dir)
 
 
 def train_input_fn():
@@ -54,4 +53,4 @@ def eval_input_fn():
     return input_fn(test_set, CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL)
 
 # train and evaluate model
-m.fit(input_fn=train_input_fn, steps=200)
+#m.fit(input_fn=train_input_fn, steps=200)
