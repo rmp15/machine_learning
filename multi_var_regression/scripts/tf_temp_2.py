@@ -48,8 +48,10 @@ model_dir = tempfile.mkdtemp()
 m = tf.contrib.learn.LinearClassifier(feature_columns=[year, rate_adj, temperature, sex, age, fips],
                                       model_dir=model_dir)
 
+
 def train_input_fn():
     return input_fn(training_set, CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL)
+
 
 def eval_input_fn():
     return input_fn(test_set, CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL)
