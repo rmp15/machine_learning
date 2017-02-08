@@ -2,10 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import numpy as np
-import tensorflow as tf
-import pandas as pd
 import itertools
+
+import pandas as pd
+import tensorflow as tf
 
 from multi_var_regression.data.file_paths import TEMP_MORT
 
