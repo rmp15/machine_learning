@@ -28,16 +28,13 @@ feature_cols = [tf.contrib.layers.real_valued_column(k)
 regressor = tf.contrib.learn.DNNRegressor(
     feature_columns=feature_cols, hidden_units=[10, 10])
 
+
 # create function to process data set
 def input_fn(data_set):
-  feature_cols = {k: tf.constant(data_set[k].values
+    feature_cols = {k: tf.constant(data_set[k].values)
                   for k in FEATURES}
-  labels = tf.constant(data_set[LABEL].values)
-  return feature_cols, labels
-labels = input_fn(training_set)
-
-print(labels)
-
+    labels = tf.constant(data_set[LABEL].values)
+    return feature_cols, labels
 
 # train the neural network regressor
 regressor.fit(input_fn=lambda: input_fn(training_set), steps=5000)
