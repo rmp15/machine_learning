@@ -1,3 +1,7 @@
+# this script
+# classifies a month as winter or non-winter
+# attempts to use tensorflow to predict from death rates
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -7,38 +11,32 @@ import itertools
 import pandas as pd
 import tensorflow as tf
 
-from multi_var_regression.data.file_paths import TEMP_MORT
+from multi_var_regression.data.categorical import *
+from multi_var_regression.data.file_paths import *
 
 # details of data set
 COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'deaths', 'iso3', 'pop', 'pop.adj', 'rate',
            'rate.adj', 'rate.adj.old', 'leap', 'deaths.adj', 'variable', 'month.short', 'state.name']
 FEATURES = ['year', 'month', 'variable']
-LABEL = 'rate.adj'
+LABEL = 'label'
 
-CONTINUOUS_COLUMNS = ['deaths', 'pop', 'pop.adj', 'rate', 'rate.adj', 'rate.adj.old', 'deaths.adj', 'variable']
-CATEGORICAL_COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'iso3', 'leap', 'month.short', 'state.name']
-
-# define details
-sexes = ["1", "2"]
-ages = ["0", "5", "15", "25", "35", "45", "55", "65", "75", "85"]
+CONTINUOUS_COLUMNS = ['deaths', 'pop', 'year', 'pop.adj', 'rate', 'rate.adj', 'rate.adj.old', 'deaths.adj', 'variable']
+CATEGORICAL_COLUMNS = ['sex', 'age', 'month', 'fips', 'iso3', 'leap', 'month.short', 'state.name']
 
 # define categorical variables in tf
 sex = tf.contrib.layers.sparse_column_with_keys(column_name="sex", keys=sexes)
 age = tf.contrib.layers.sparse_column_with_keys(column_name="age", keys=ages)
-year = tf.contrib.layers.sparse_column_with_keys(column_name="age", keys=ages)
-month =
-iso3 =
-leap =
-
-
+month = tf.contrib.layers.sparse_column_with_keys(column_name="month", keys=months)
+fips =  tf.contrib.layers.sparse_column_with_keys(column_name="month", keys=fips)
 
 # Load data sets
 training_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
                            skiprows=1, names=COLUMNS)
 test_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
                        names=COLUMNS, skiprows=(training_set.shape[0] - 1000 + 1))
-prediction_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
-                       names=COLUMNS, skiprows=(training_set.shape[0] - 10 + 1))
+
+training_set[LABEL] = (training_set["month"].apply(lambda x: ">50K" in x)).astype(int)
+test_set[LABEL] = (test_set["month"].apply(lambda x: ">50K" in x)).astype(int)
 
 # create function to process data set
 def input_fn(df):
@@ -62,19 +60,3 @@ def input_fn(df):
     return feature_cols, label
 
 
-
-# train the neural network regressor
-regressor.fit(input_fn=lambda: input_fn(training_set), steps=5000)
-
-# evaluate the model fit
-ev = regressor.evaluate(input_fn=lambda: input_fn(test_set), steps=1)
-loss_score = ev["loss"]
-print("Loss: {0:f}".format(loss_score))
-
-# make predictions using the model
-y = regressor.predict(input_fn=lambda: input_fn(prediction_set))
-# .predict() returns an iterator; convert to a list and print predictions
-predictions = list(itertools.islice(y, 10))
-print("Predictions: {}".format(str(predictions)))
-
-print(prediction_set.head())
