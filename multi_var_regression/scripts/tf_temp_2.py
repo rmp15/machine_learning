@@ -1,12 +1,12 @@
 # this script
 # classifies a month as winter or non-winter
-# attempts to use tensorflow to predict from death rates
+# attempts to use tf to predict from death rates
 
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import itertools
+import tempfile
 
 import pandas as pd
 import tensorflow as tf
@@ -23,20 +23,28 @@ LABEL = 'label'
 CONTINUOUS_COLUMNS = ['deaths', 'pop', 'year', 'pop.adj', 'rate', 'rate.adj', 'rate.adj.old', 'deaths.adj', 'variable']
 CATEGORICAL_COLUMNS = ['sex', 'age', 'month', 'fips', 'iso3', 'leap', 'month.short', 'state.name']
 
-# define categorical variables in tf
-sex = tf.contrib.layers.sparse_column_with_keys(column_name="sex", keys=sexes)
-age = tf.contrib.layers.sparse_column_with_keys(column_name="age", keys=ages)
-month = tf.contrib.layers.sparse_column_with_keys(column_name="month", keys=months)
-fips =  tf.contrib.layers.sparse_column_with_keys(column_name="month", keys=fips)
-
 # Load data sets
 training_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
                            skiprows=1, names=COLUMNS)
 test_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
                        names=COLUMNS, skiprows=(training_set.shape[0] - 1000 + 1))
 
-training_set[LABEL] = (training_set["month"].apply(lambda x: ">50K" in x)).astype(int)
-test_set[LABEL] = (test_set["month"].apply(lambda x: ">50K" in x)).astype(int)
+#training_set[LABEL] = (training_set["month"].apply(lambda x: ">2" in x)).astype(int)
+#test_set[LABEL] = (test_set["month"].apply(lambda x: ">50K" in x)).astype(int)
+
+# define categorical variables in tf
+sex = tf.contrib.layers.sparse_column_with_keys(column_name="sex", keys=sexes)
+age = tf.contrib.layers.sparse_column_with_keys(column_name="age", keys=ages)
+month = tf.contrib.layers.sparse_column_with_keys(column_name="month", keys=months)
+fips = tf.contrib.layers.sparse_column_with_keys(column_name="fips", keys=fips)
+
+# define continuous columns in tf
+deaths_adj = tf.contrib.layers.real_valued_column("deaths.adj")
+pop_adj = tf.contrib.layers.real_valued_column("pop.adj")
+rate_adj = tf.contrib.layers.real_valued_column("rate.adj")
+temperature = tf.contrib.layers.real_valued_column("variable")
+
+print(deaths_adj)
 
 # create function to process data set
 def input_fn(df):
@@ -58,5 +66,20 @@ def input_fn(df):
     label = tf.constant(df[LABEL_COLUMN].values)
     # Returns the feature columns and the label.
     return feature_cols, label
+
+def train_input_fn():
+  return input_fn(df_train)
+
+def eval_input_fn():
+  return input_fn(df_test)
+
+# defining the logistic regression model
+model_dir = tempfile.mkdtemp()
+
+m = tf.contrib.learn.LinearClassifier(feature_columns=[sex, age, month, fips, rate_adj, temperature],
+                                      model_dir=model_dir)
+
+# train and evaluate model
+m.fit(input_fn=train_input_fn, steps=200)
 
 
