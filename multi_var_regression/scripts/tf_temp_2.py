@@ -2,10 +2,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import numpy as np
-import tensorflow as tf
-import pandas as pd
 import itertools
+
+import pandas as pd
+import tensorflow as tf
 
 from multi_var_regression.data.file_paths import TEMP_MORT
 
@@ -15,8 +15,22 @@ COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'deaths', 'iso3', 'pop', 'pop.
 FEATURES = ['year', 'month', 'variable']
 LABEL = 'rate.adj'
 
+CONTINUOUS_COLUMNS = ['deaths', 'pop', 'pop.adj', 'rate', 'rate.adj', 'rate.adj.old', 'deaths.adj', 'variable']
 CATEGORICAL_COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'iso3', 'leap', 'month.short', 'state.name']
-CONTINUOUS_COLUMNS = ["age", "education_num", "capital_gain", "capital_loss", "hours_per_week"]
+
+# define details
+sexes = ["1", "2"]
+ages = ["0", "5", "15", "25", "35", "45", "55", "65", "75", "85"]
+
+# define categorical variables in tf
+sex = tf.contrib.layers.sparse_column_with_keys(column_name="sex", keys=sexes)
+age = tf.contrib.layers.sparse_column_with_keys(column_name="age", keys=ages)
+year = tf.contrib.layers.sparse_column_with_keys(column_name="age", keys=ages)
+month =
+iso3 =
+leap =
+
+
 
 # Load data sets
 training_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
@@ -26,21 +40,28 @@ test_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
 prediction_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
                        names=COLUMNS, skiprows=(training_set.shape[0] - 10 + 1))
 
-# create feature columns formally, confirming they are all real-valued
-feature_cols = [tf.contrib.layers.real_valued_column(k)
-                for k in FEATURES]
-
-# instantiate a DNNRegressor for the neural network regression model.
-regressor = tf.contrib.learn.DNNRegressor(
-    feature_columns=feature_cols, hidden_units=[10, 10])
-
-
 # create function to process data set
-def input_fn(data_set):
-    feature_cols = {k: tf.constant(data_set[k].values)
-                  for k in FEATURES}
-    labels = tf.constant(data_set[LABEL].values)
-    return feature_cols, labels
+def input_fn(df):
+
+    # Creates a dictionary mapping from each continuous feature column name (k) to
+    # the values of that column stored in a constant Tensor.
+    continuous_cols = {k: tf.constant(df[k].values)
+                         for k in CONTINUOUS_COLUMNS}
+    # Creates a dictionary mapping from each categorical feature column name (k)
+    # to the values of that column stored in a tf.SparseTensor.
+    categorical_cols = {k: tf.SparseTensor(
+        indices=[[i, 0] for i in range(df[k].size)],
+        values=df[k].values,
+        shape=[df[k].size, 1])
+                          for k in CATEGORICAL_COLUMNS}
+    # Merges the two dictionaries into one.
+    feature_cols = dict(continuous_cols.items() + categorical_cols.items())
+    # Converts the label column into a constant Tensor.
+    label = tf.constant(df[LABEL_COLUMN].values)
+    # Returns the feature columns and the label.
+    return feature_cols, label
+
+
 
 # train the neural network regressor
 regressor.fit(input_fn=lambda: input_fn(training_set), steps=5000)
