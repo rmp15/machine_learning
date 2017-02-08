@@ -41,6 +41,7 @@ pop_adj = tf.contrib.layers.real_valued_column("pop.adj")
 rate_adj = tf.contrib.layers.real_valued_column("rate.adj")
 temperature = tf.contrib.layers.real_valued_column("variable")
 
+# make temporary file location
 model_dir = tempfile.mkdtemp()
 
 # defining the logistic regression model
@@ -48,4 +49,4 @@ m = tf.contrib.learn.LinearClassifier(feature_columns=[sex, age, month, fips, ra
                                       model_dir=model_dir)
 
 # train and evaluate model
-m.fit(input_fn=input_fn(training_set,CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL), steps=200)
+m.fit(input_fn=input_fn(training_set, CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL), steps=200)
