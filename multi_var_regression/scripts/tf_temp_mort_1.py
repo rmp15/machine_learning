@@ -4,49 +4,40 @@ from __future__ import print_function
 
 import numpy as np
 import tensorflow as tf
+import pandas as pd
 
-from multi_var_regression.data.csv import extract_train_test
 from multi_var_regression.data.file_paths import TEMP_MORT
 
-# Load datasets
-train, test = extract_train_test(TEMP_MORT, , 1000)
-feature_tensor = tf.constant()
+# details of data set
+COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'deaths', 'iso3', 'pop', 'pop.adj', 'rate',
+           'rate.adj', 'rate.adj.old', 'leap', 'deaths.adj', 'variable', 'month.short', 'state.name']
+FEATURES = ['year', 'month', 'fips']
+LABEL = 'variable'
+
+# Load data sets
+training_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
+                           skiprows=1, names=COLUMNS)
+test_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
+                       names=COLUMNS, skiprows=(training_set.shape[0] - 1000 + 1))
+
+# create feature columns formally, confirming they are all real-valued
+feature_cols = [tf.contrib.layers.real_valued_column(k)
+                for k in FEATURES]
+
+# instantiate a DNNRegressor for the neural network regression model.
+regressor = tf.contrib.learn.DNNRegressor(
+    feature_columns=feature_cols, hidden_units=[10, 10])
+
+# create function to process data set
+def input_fn(data_set):
+  feature_cols = {k: tf.constant(data_set[k].values
+                  for k in FEATURES}
+  labels = tf.constant(data_set[LABEL].values)
+  return feature_cols, labels
+labels = input_fn(training_set)
+
+print(labels)
 
 
-training_set = tf.contrib.learn.datasets.base.load_csv_with_header(
-    filename='output_train_2.csv',
-    target_dtype=np.float32,
-    features_dtype=np.int)
-
-print(training_set)
-
-test_set = tf.contrib.learn.datasets.base.load_csv_with_header(
-    filename='output_test.csv',
-    target_dtype=np.float32,
-    features_dtype=np.float32)
-
-
-# Specify that all features have real-value data
-feature_columns = [tf.contrib.layers.real_valued_column("", dimension=4)]
-
-# Build 3 layer DNN with 10, 20, 10 units respectively.
-classifier = tf.contrib.learn.DNNClassifier(feature_columns=feature_columns,
-                                            hidden_units=[10, 20, 10],
-                                            n_classes=3,
-                                            model_dir="/tmp/iris_model")
-
-# Fit model.
-classifier.fit(x=training_set.data,
-               y=training_set.target,
-               steps=2000)
-
-# Evaluate accuracy.
-accuracy_score = classifier.evaluate(x=test_set.data,
-                                     y=test_set.target)["accuracy"]
-print('Accuracy: {0:f}'.format(accuracy_score))
-
-# Classify two new flower samples.
-new_samples = np.array(
-    [[6.4, 3.2, 4.5, 1.5], [5.8, 3.1, 5.0, 1.7]], dtype=float)
-y = list(classifier.predict(new_samples, as_iterable=True))
-print('Predictions: {}'.format(str(y)))
+# train the neural network regressor
+regressor.fit(input_fn=lambda: input_fn(training_set), steps=5000)
