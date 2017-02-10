@@ -1,16 +1,14 @@
 import random
-import pandas
-from sklearn.cross_validation import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
-from sklearn.preprocessing import LabelEncoder
-from sklearn.utils import check_array
 
 import pandas as pd
-
 import tensorflow as tf
+from sklearn.cross_validation import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import LabelEncoder
 from tensorflow.contrib import layers
 from tensorflow.contrib import learn
+
+import matplotlib as plt
 
 from multi_var_regression.data.file_paths import TEMP_MORT
 
@@ -19,8 +17,8 @@ train = pd.read_csv(TEMP_MORT)
 y = train.pop('season')
 
 # Drop all unique columns. List all variables for future reference.
-CONTINUOUS_COLUMNS = ['year', 'rate.adj', 'temperature']
-CATEGORICAL_COLUMNS = ['sex', 'age', 'month', 'fips']
+CONTINUOUS_COLUMNS = ['rate.adj', 'temperature']
+CATEGORICAL_COLUMNS = ['year', 'sex', 'age', 'fips']
 X = train[CATEGORICAL_COLUMNS + CONTINUOUS_COLUMNS].fillna(0)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
