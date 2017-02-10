@@ -2,7 +2,7 @@
 #https://medium.com/@ilblackdragon/tensorflow-tutorial-part-4-958c29c717a0#.g539govuk
 
 # NEED TO FIX THIS FOR CONTINUOUS OUTPUT
-def log_regr(DATA,CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL):
+def regr(DATA,CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL):
 
     import random
 
