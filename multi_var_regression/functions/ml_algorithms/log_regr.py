@@ -86,7 +86,7 @@ def log_regr(DATA,CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL):
     classifier = learn.Estimator(model_fn=dnn_tanh)
 
     # Note: not training this almost at all.
-    classifier.fit(input_fn=pandas_input_fn(X_train, y_train), steps=100)
+    classifier.fit(input_fn=pandas_input_fn(X_train, y_train), steps=1000)
     preds = list(classifier.predict(input_fn=pandas_input_fn(X_test, num_epochs=1), as_iterable=True))
 
     result = accuracy_score(y_test, preds)
