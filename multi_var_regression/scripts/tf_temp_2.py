@@ -11,12 +11,12 @@ import tempfile
 import pandas as pd
 import tensorflow as tf
 
-from multi_var_regression.data.categorical import *
 from multi_var_regression.data.file_paths import *
 from multi_var_regression.data.tf_input import input_fn
 
 COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'rate.adj', 'temperature', 'season']
-CONTINUOUS_COLUMNS = ['sex', 'age', 'year', 'fips', 'rate.adj', 'temperature']
+CONTINUOUS_COLUMNS = ['rate.adj', 'temperature']
+#CONTINUOUS_COLUMNS = ['sex', 'age', 'year', 'fips', 'rate.adj', 'temperature']
 CATEGORICAL_COLUMNS = ['month']
 LABEL = 'season'
 
@@ -45,7 +45,7 @@ fips = tf.contrib.layers.real_valued_column("fips")
 model_dir = tempfile.mkdtemp()
 
 # defining the logistic regression model
-m = tf.contrib.learn.LinearClassifier(feature_columns=[year, rate_adj, temperature, sex, age, fips],
+m = tf.contrib.learn.LinearClassifier(feature_columns=[rate_adj, temperature],
                                       model_dir=model_dir)
 
 
@@ -59,6 +59,6 @@ def eval_input_fn():
 # train and evaluate model
 m.fit(input_fn=train_input_fn, steps=200)
 
-results = m.evaluate(input_fn=eval_input_fn, steps=1)
+results = m.evaluate(input_fn=eval_input_fn, steps=10)
 for key in sorted(results):
     print("%s: %s" % (key, results[key]))
