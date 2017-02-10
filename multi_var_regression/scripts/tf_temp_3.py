@@ -14,10 +14,6 @@ from tensorflow.contrib import learn
 
 from multi_var_regression.data.file_paths import TEMP_MORT
 
-COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'rate.adj', 'temperature', 'season']
-'''COLUMN_CLASSES = [[''], [''], [1], [''], [''], [1.0], [1.0], ['']]'''
-LABEL = 'season'
-
 # load data
 train = pd.read_csv(TEMP_MORT)
 y = train.pop('season')
