@@ -89,4 +89,8 @@ def log_regr(DATA,CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL):
     # Note: not training this almost at all.
     classifier.fit(input_fn=pandas_input_fn(X_train, y_train), steps=100)
     preds = list(classifier.predict(input_fn=pandas_input_fn(X_test, num_epochs=1), as_iterable=True))
-    print(accuracy_score(y_test, preds))
+
+    result = accuracy_score(y_test, preds)
+    print(result)
+
+    return result

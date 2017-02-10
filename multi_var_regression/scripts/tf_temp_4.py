@@ -1,5 +1,6 @@
 from multi_var_regression.data.file_paths import *
-from multi_var_regression.functions.ml_algorithms import log_regr
+from multi_var_regression.functions.ml_algorithms import *
+from multi_var_regression.functions.ml_algorithms.log_regr import log_regr
 
-
-log_regr(TEMP_TEST_1, ['rate.adj', 'temperature'], ['year', 'sex', 'age', 'fips'], 'season')
+regr_1 = log_regr(TEMP_TEST_1, ['rate.adj', 'temperature'], ['year', 'sex', 'age', 'fips'], 'season')
+print("success rate is %.3f %" % regr_1)
