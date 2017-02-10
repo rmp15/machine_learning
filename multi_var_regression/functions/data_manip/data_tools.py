@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 
 # multiplies a rate by a chosen number
 def rate_multiply(data, rate_col, multiply_factor):
@@ -15,6 +16,12 @@ def compound_key(data, col1, col2):
     # compound cell values
     data[col1 + '_' + col2] = str(data[col1]) + str(data[col2])
     data[col1 + '_' + col2] = pd.factorize(data[col1 + '_' + col2])[0] + 1
+
+
+# iteratively appends data frame
+def data_append(root, ext1, ext2, ext3, ext4, ext5):
+
+
 
 
 # creates unique names from a column in a data frame
