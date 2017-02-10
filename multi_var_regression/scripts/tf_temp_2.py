@@ -9,7 +9,7 @@ from __future__ import print_function
 import pandas as pd
 import tensorflow as tf
 
-from multi_var_regression.data.file_paths import TEMP_MORT
+from multi_var_regression.data.file_paths import DATA
 
 COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'rate.adj', 'temperature', 'season']
 COLUMN_CLASSES = [[''], [''], [1], [''], [''], [1.0], [1.0], ['']]
@@ -18,12 +18,12 @@ CATEGORICAL_COLUMNS = ['month']
 LABEL = 'season'
 
 # load data
-training_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
+training_set = pd.read_csv(DATA, skipinitialspace=True,
                            skiprows=1, names=COLUMNS)
 
 
 def my_input_fn():
-    examples = tf.contrib.learn.graph_io.read_batch_examples(TEMP_MORT, 32, tf.TextLineReader)
+    examples = tf.contrib.learn.graph_io.read_batch_examples(DATA, 32, tf.TextLineReader)
     header = COLUMNS
     record_defaults = COLUMN_CLASSES
     cols = tf.decode_csv(examples, record_defaults=record_defaults)

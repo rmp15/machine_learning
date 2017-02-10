@@ -1,3 +1,8 @@
+'''
+Based on:
+https://medium.com/@ilblackdragon/tensorflow-tutorial-part-4-958c29c717a0#.g539govuk
+'''
+
 import random
 
 import pandas as pd
@@ -8,10 +13,10 @@ from sklearn.preprocessing import LabelEncoder
 from tensorflow.contrib import layers
 from tensorflow.contrib import learn
 
-from multi_var_regression.data.file_paths import TEMP_MORT
+from multi_var_regression.data.file_paths import TEMP_TEST_1
 
 # load data
-train = pd.read_csv(TEMP_MORT)
+train = pd.read_csv(TEMP_TEST_1)
 y = train.pop('season')
 
 # Drop all unique columns. List all variables for future reference.

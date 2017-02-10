@@ -7,7 +7,7 @@ import itertools
 import pandas as pd
 import tensorflow as tf
 
-from multi_var_regression.data.file_paths import TEMP_MORT
+from multi_var_regression.data.file_paths import DATA
 
 # details of data set
 COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'rate.adj', 'temperature', 'season']
@@ -15,11 +15,11 @@ FEATURES = ['sex', 'rate.adj', 'season']
 LABEL = 'temperature'
 
 # Load data sets
-training_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
+training_set = pd.read_csv(DATA, skipinitialspace=True,
                            skiprows=1, names=COLUMNS)
-test_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
+test_set = pd.read_csv(DATA, skipinitialspace=True,
                        names=COLUMNS, skiprows=(training_set.shape[0] - 1000 + 1))
-prediction_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
+prediction_set = pd.read_csv(DATA, skipinitialspace=True,
                              names=COLUMNS, skiprows=(training_set.shape[0] - 10 + 1))
 
 # create feature columns formally, confirming they are all real-valued
