@@ -3,6 +3,7 @@
 # gender
 sexes = ["1", "2"]
 sexes_long = ["Men", "Women"]
+sexes_long_2 = ["male", "female"]
 
 # ages
 ages = ["0", "5", "15", "25", "35", "45", "55", "65", "75", "85"]
