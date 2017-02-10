@@ -8,8 +8,6 @@ from sklearn.preprocessing import LabelEncoder
 from tensorflow.contrib import layers
 from tensorflow.contrib import learn
 
-import matplotlib as plt
-
 from multi_var_regression.data.file_paths import TEMP_MORT
 
 # load data
@@ -25,21 +23,23 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # Pandas input function.
 def pandas_input_fn(x, y=None, batch_size=128, num_epochs=None):
-  def input_fn():
-    if y is not None:
-      x['target'] = y
-    queue = tf.contrib.learn.dataframe.queues.feeding_functions.enqueue_data(
-      x, 1000, shuffle=num_epochs is None, num_epochs=num_epochs)
-    if num_epochs is None:
-      features = queue.dequeue_many(batch_size)
-    else:
-      features = queue.dequeue_up_to(batch_size)
-    features = dict(zip(['index'] + list(x.columns), features))
-    if y is not None:
-      target = features.pop('target')
-      return features, target
-    return features
-  return input_fn
+    def input_fn():
+        if y is not None:
+            x['target'] = y
+        queue = tf.contrib.learn.dataframe.queues.feeding_functions.enqueue_data(
+            x, 1000, shuffle=num_epochs is None, num_epochs=num_epochs)
+        if num_epochs is None:
+            features = queue.dequeue_many(batch_size)
+        else:
+            features = queue.dequeue_up_to(batch_size)
+        features = dict(zip(['index'] + list(x.columns), features))
+        if y is not None:
+            target = features.pop('target')
+            return features, target
+        return features
+
+    return input_fn
+
 
 # Process categorical variables into ids.
 X_train = X_train.copy()
@@ -72,11 +72,12 @@ def dnn_tanh(features, target):
     features = tf.concat(1, final_features)
     # Deep Neural Network
     logits = layers.stack(features, layers.fully_connected, [10, 20, 10],
-        activation_fn=tf.tanh)
+                          activation_fn=tf.tanh)
     prediction, loss = learn.models.logistic_regression(logits, target)
     train_op = layers.optimize_loss(loss,
-        tf.contrib.framework.get_global_step(), optimizer='SGD', learning_rate=0.05)
+                                    tf.contrib.framework.get_global_step(), optimizer='SGD', learning_rate=0.05)
     return tf.argmax(prediction, dimension=1), loss, train_op
+
 
 random.seed(42)
 classifier = learn.Estimator(model_fn=dnn_tanh)

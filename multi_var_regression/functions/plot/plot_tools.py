@@ -1,5 +1,6 @@
-import matplotlib.pyplot as plt
 import os
+
+import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib import rc
 from matplotlib.pyplot import savefig
