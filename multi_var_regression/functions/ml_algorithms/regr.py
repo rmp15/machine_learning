@@ -64,6 +64,7 @@ def regr(DATA,CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL):
 
     # 3 layer neural network with hyperbolic tangent activation.
     def dnn_tanh(features, target):
+        # what does one-hot vector mean?
         target = tf.one_hot(target, 2, 1.0, 0.0)
         # Organize continues features.
         final_features = [tf.expand_dims(tf.cast(features[var], tf.float32), 1) for var in CONTINUOUS_COLUMNS]
