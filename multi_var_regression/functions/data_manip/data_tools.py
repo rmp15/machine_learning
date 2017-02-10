@@ -20,7 +20,15 @@ def compound_key(data, col1, col2):
 
 # iteratively appends data frame
 def data_append(root, ext1, ext2, ext3, ext4, ext5):
+    data = pd.DataFrame()
+    for e1 in ext1:
+        for e2 in ext2:
+            for e3 in ext3:
+                for e4 in ext4:
+                    for e5 in ext5:
+                        data.append(os.path.join(root,ex1,ex2,ex3,ex4,ex5))
 
+    return data
 
 
 
