@@ -6,59 +6,28 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import tempfile
-
 import pandas as pd
 import tensorflow as tf
 
-from multi_var_regression.data.file_paths import *
-from multi_var_regression.data.tf_input import input_fn
+from multi_var_regression.data.file_paths import TEMP_MORT
 
 COLUMNS = ['sex', 'age', 'year', 'month', 'fips', 'rate.adj', 'temperature', 'season']
-CONTINUOUS_COLUMNS = ['rate.adj', 'temperature']
-#CONTINUOUS_COLUMNS = ['sex', 'age', 'year', 'fips', 'rate.adj', 'temperature']
+COLUMN_CLASSES = [[''], [''], [1], [''], [''], [1.0], [1.0], ['']]
+CONTINUOUS_COLUMNS = ['sex', 'age', 'year', 'fips', 'rate.adj', 'temperature']
 CATEGORICAL_COLUMNS = ['month']
 LABEL = 'season'
 
-# Load data sets
+# load data
 training_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
                            skiprows=1, names=COLUMNS)
-test_set = pd.read_csv(TEMP_MORT, skipinitialspace=True,
-                       names=COLUMNS, skiprows=(training_set.shape[0] - 1000 + 1))
-
-# define continuous columns in tf
-year = tf.contrib.layers.real_valued_column("year")
-rate_adj = tf.contrib.layers.real_valued_column("rate.adj")
-temperature = tf.contrib.layers.real_valued_column("temperature")
-sex = tf.contrib.layers.real_valued_column("sex")
-age = tf.contrib.layers.real_valued_column("age")
-fips = tf.contrib.layers.real_valued_column("fips")
 
 
-# define categorical variables in tf
-# sex = tf.contrib.layers.sparse_column_with_keys(column_name="sex", keys=sexes)
-# age = tf.contrib.layers.sparse_column_with_keys(column_name="age", keys=ages)
-# month = tf.contrib.layers.sparse_column_with_keys(column_name="month", keys=months_short)
-# fips = tf.contrib.layers.sparse_column_with_keys(column_name="fips", keys=fips)
+def my_input_fn():
+    examples = tf.contrib.learn.graph_io.read_batch_examples(TEMP_MORT, 32, tf.TextLineReader)
+    header = COLUMNS
+    record_defaults = COLUMN_CLASSES
+    cols = tf.decode_csv(examples, record_defaults=record_defaults)
+    features = zip(header, cols)
+    target = features.pop('season')
+    return features, target
 
-# make temporary file location
-model_dir = tempfile.mkdtemp()
-
-# defining the logistic regression model
-m = tf.contrib.learn.LinearClassifier(feature_columns=[rate_adj, temperature],
-                                      model_dir=model_dir)
-
-
-def train_input_fn():
-    return input_fn(training_set, CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL)
-
-
-def eval_input_fn():
-    return input_fn(test_set, CONTINUOUS_COLUMNS, CATEGORICAL_COLUMNS, LABEL)
-
-# train and evaluate model
-m.fit(input_fn=train_input_fn, steps=200)
-
-results = m.evaluate(input_fn=eval_input_fn, steps=10)
-for key in sorted(results):
-    print("%s: %s" % (key, results[key]))
