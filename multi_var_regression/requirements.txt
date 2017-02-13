@@ -1,4 +1,4 @@
-feather
+#feather
 scipy
 scikit-learn
 numpy
@@ -7,3 +7,4 @@ tensorflow
 matplotlib
 six
 seaborn
+rpy2
