@@ -2,6 +2,9 @@ import pandas as pd
 import os
 
 # multiplies a rate by a chosen number
+from ml_hack.data.csv import read_csv
+
+
 def rate_multiply(data, rate_col, multiply_factor):
 
     # create death rate per multiplicative factor
@@ -46,3 +49,4 @@ def unique_names(data, col):
     print(state_names)
 
     print(type(state_names))
+
